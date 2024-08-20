@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mt-3" >
-    <form class="ms-auto me-auto mt-3" style="width: 500px">
+    <form action="{{route('login.post')}}" method="POST"  class="ms-auto me-auto mt-3" style="width: 500px">
         <div class="mb-3">
             <label  class="form-label">Email address</label>
             <input type="email" class="form-control" name="email">

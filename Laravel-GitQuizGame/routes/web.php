@@ -1,14 +1,13 @@
 <?php
 
+use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
 
-Route::get('/login',function(){
-    return view('login');
-});
-Route::get('registration',function(){
-    return view('registration');
-});
+Route::get('/login',[AuthManager::class, 'login'])->name('login');
+Route::post('/login',[AuthManager::class, 'loginPost'])->name('login.post');
+Route::get('registration',[AuthManager::class, 'registration'])->name('registration');
+Route::post('registration',[AuthManager::class, 'registrationPost'])->name('registration.post');
