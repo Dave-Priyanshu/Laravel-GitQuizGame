@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help - Git Command Test</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/index-style.css') }}">
 </head>
 <body>
     <div class="container">
@@ -13,7 +13,7 @@
             <p id="help-question"></p>
             <p id="help-answer"></p>
         </div>
-        <a href="index.html">Go back to test</a>
+        <a href="/">Go back to test</a>
     </div>
 
     <script>
@@ -21,7 +21,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const index = parseInt(urlParams.get('index'), 10);
 
-            fetch('questions.json')
+            fetch('/questions')
                 .then(response => response.json())
                 .then(data => {
                     if (index >= 0 && index < data.length) {
