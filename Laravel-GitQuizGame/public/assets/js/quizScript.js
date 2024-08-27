@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let userScore = 0;
 
     function loadQuestion(index) {
-        console.log('start');
         if (index >= 0 && index < questions.length) {
             questionElem.textContent = questions[index].question;
             userAnswer.value = '';
@@ -34,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateScore() {
+        userScore++;
+        localStorage.setItem('userScore', userScore); // Store the updated score
         scoreElem.textContent = `Score: ${userScore}`;
     }
 
@@ -42,6 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 questions = data;
+                const storedIndex = parseInt(localStorage.getItem('currentQuestionIndex'), 10);
+                currentQuestionIndex = !isNaN(storedIndex) && storedIndex >= 0 && storedIndex < questions.length ? storedIndex : 0;
+
+                // Retrieve and set the stored score
+                const storedScore = parseInt(localStorage.getItem('userScore'), 10);
+                userScore = !isNaN(storedScore) ? storedScore : 0;
+                updateScore(); // Display the retrieved score
+
                 loadQuestion(currentQuestionIndex);
                 content.style.display = 'block';
                 loading.style.display = 'none';
@@ -62,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
             message.style.color = "green";
             // Mark the current question as answered
             questionAnswered[currentQuestionIndex] = true;
-            userScore++;
             updateScore();
             // Show Next button if not the last question
             if (currentQuestionIndex < questions.length - 1) {
@@ -76,14 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-   
     helpBtn.addEventListener('click', () => {
         const helpUrl = `/help?index=${currentQuestionIndex}`;
         window.location.href = helpUrl;
     });
-
-
-    
 
     hintBtn.addEventListener('click', () => {
         message.textContent = `Hint: ${questions[currentQuestionIndex].answer}`;
@@ -97,6 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             loadQuestion(currentQuestionIndex);
+            // Store the current index in localStorage
+            localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
         }
     });
 
@@ -104,6 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQuestionIndex < questions.length - 1) {
             currentQuestionIndex++;
             loadQuestion(currentQuestionIndex);
+            // Store the current index in localStorage
+            localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
         }
     });
 

@@ -1,10 +1,10 @@
 <x-layout>
     <!-- Page-specific content -->
     <div class="container mx-auto p-6">
-        <div class="loading mb-4">
+        <div class="loading mb-4" style="display: none;">
             <!-- Add Tailwind CSS classes for loading animation if needed -->
         </div>
-        <div class="content bg-white p-6 rounded-lg shadow-lg">
+        <div class="content bg-white p-6 rounded-lg shadow-lg" style="display: none;">
             <h1 class="text-3xl font-bold mb-4">Git Command Test</h1>
             <p id="question" class="mb-4"></p>
             <input
