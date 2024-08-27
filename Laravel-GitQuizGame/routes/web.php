@@ -28,3 +28,10 @@ Route::get('/questions',[QuestionController::class,'getQuestions'])->name('quest
 Route::get('/help', function () {
     return view('help');
 })->name('help');
+
+
+//route for the quix score
+Route::middleware('auth')->group(function() {
+    Route::post('/update-score',[AuthManager::class,'updateScore']);
+    Route::get('/get-score',[AuthManager::class,'getScore']);
+});

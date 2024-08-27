@@ -4,6 +4,9 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
         <link rel="icon" href="images/favicon.ico" />
         <link
             rel="stylesheet"
@@ -108,11 +111,11 @@ window.addEventListener("scroll", function() {
 >
     <p class="ml-1">Copyright &copy; 2024, All Rights reserved</p>
 
-    <a
+    {{-- <a
         href="/listings/create"
         class="absolute top-1/3 right-10 bg-black text-white py-2 px-5"
         >Post Job</a
-    >
+    > --}}
     <div class="absolute bottom-3 left-10 flex space-x-4 text-2xl">
         <a href="https://github.com/Dave-Priyanshu"><i class="fa-brands fa-github"></i></a>
         <a href="#"><i class="fa-brands fa-linkedin"></i></a>

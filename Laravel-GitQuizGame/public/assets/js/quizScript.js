@@ -28,8 +28,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateScore() {
         userScore++;
-        localStorage.setItem('userScore', userScore); // Store the updated score in localStorage
+        localStorage.setItem('userScore', userScore);
         scoreElem.textContent = `Score: ${userScore}`;
+    
+        const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+        if (!csrfTokenMeta) {
+            console.error('CSRF token meta tag not found.');
+            return;
+        }
+    
+        fetch('/update-score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfTokenMeta.getAttribute('content')
+            },
+            body: JSON.stringify({ score: userScore })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Score updated successfully:', data);
+        })
+        .catch(error => {
+            console.error('Error updating score:', error);
+        });
+    }
+    
+
+    function fetchScore() {
+        fetch('/get-score')
+            .then(response => response.json())
+            .then(data => {
+                scoreElem.textContent = `Score: ${data.score}`;
+                userScore = data.score; // Update userScore with the fetched score
+            })
+            .catch(error => console.error('Error fetching score:', error));
     }
 
     function fetchQuestions() {
@@ -109,6 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('currentQuestionIndex');
         localStorage.removeItem('userScore');
         sessionStorage.removeItem('isNewUser');
+    } else {
+        fetchScore();
     }
 
     // Fetch questions and restore the current state
