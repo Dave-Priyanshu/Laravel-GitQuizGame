@@ -7,12 +7,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
-})->name('home');
+})->name('home')->middleware('auth');
 
-Route::get('/login',[AuthManager::class, 'login'])->name('login');
-Route::post('/login',[AuthManager::class, 'loginPost'])->name('login.post');
-Route::get('registration',[AuthManager::class, 'registration'])->name('registration');
-Route::post('registration',[AuthManager::class, 'registrationPost'])->name('registration.post');
+
+//show login form
+Route::get('/login', [AuthManager::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [AuthManager::class, 'login'])->middleware('guest');
+
+
+
+//Register page route
+Route::get('/register', [AuthManager::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthManager::class, 'register']);
+
+//Logout route
+Route::post('/logout', [AuthManager::class, 'logout'])->name('logout');
 
 Route::get('/questions',[QuestionController::class,'getQuestions'])->name('questions');
 
