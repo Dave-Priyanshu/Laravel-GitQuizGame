@@ -10,7 +10,7 @@ As I was learning Laravel and Git, I decided to create this quiz project to rein
 
 ## Completed Features
 
-- **Progress Saving**: Implemented saving user progress with `localStorage` or `sessionStorage`.
+- **Progress Saving**: Implemented saving user progress with `localStorage`.
 - **User Authentication**: Added manual authentication for user accounts and progress tracking.
 - **Questions Database Integration**: Added 50 questions to the database, which are now dynamically loaded.
 
