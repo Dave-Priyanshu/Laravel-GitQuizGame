@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let questions = [];
     let currentQuestionIndex = 0;
-    let questionAnswered = {}; 
+    let questionAnswered = {};
     let userScore = 0;
 
     function loadQuestion(index) {
@@ -21,20 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
             questionElem.textContent = questions[index].question;
             userAnswer.value = '';
             message.textContent = '';
-            // Show/hide Previous button
             prevBtn.style.display = index > 0 ? 'inline-block' : 'none';
-            // Determine whether to show Next button
-            if (index in questionAnswered && questionAnswered[index]) {
-                nextBtn.style.display = index < questions.length - 1 ? 'inline-block' : 'none';
-            } else {
-                nextBtn.style.display = 'none';
-            }
+            nextBtn.style.display = (index in questionAnswered && questionAnswered[index]) ? (index < questions.length - 1 ? 'inline-block' : 'none') : 'none';
         }
     }
 
     function updateScore() {
         userScore++;
-        localStorage.setItem('userScore', userScore); // Store the updated score
+        localStorage.setItem('userScore', userScore); // Store the updated score in localStorage
         scoreElem.textContent = `Score: ${userScore}`;
     }
 
@@ -43,13 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 questions = data;
-                const storedIndex = parseInt(localStorage.getItem('currentQuestionIndex'), 10);
-                currentQuestionIndex = !isNaN(storedIndex) && storedIndex >= 0 && storedIndex < questions.length ? storedIndex : 0;
 
-                // Retrieve and set the stored score
+                const storedIndex = parseInt(localStorage.getItem('currentQuestionIndex'), 10);
+                currentQuestionIndex = (!isNaN(storedIndex) && storedIndex >= 0 && storedIndex < questions.length) ? storedIndex : 0;
+
                 const storedScore = parseInt(localStorage.getItem('userScore'), 10);
-                userScore = !isNaN(storedScore) ? storedScore : 0;
-                updateScore(); // Display the retrieved score
+                userScore = (!isNaN(storedScore)) ? storedScore : 0;
+                scoreElem.textContent = `Score: ${userScore}`;
 
                 loadQuestion(currentQuestionIndex);
                 content.style.display = 'block';
@@ -69,17 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userAnswer.value.trim().toLowerCase() === currentQuestion.answer.toLowerCase()) {
             message.textContent = "The answer is right!";
             message.style.color = "green";
-            // Mark the current question as answered
             questionAnswered[currentQuestionIndex] = true;
             updateScore();
-            // Show Next button if not the last question
             if (currentQuestionIndex < questions.length - 1) {
                 nextBtn.style.display = 'inline-block';
             }
         } else {
             message.textContent = "The answer is incorrect. Try again.";
             message.style.color = "red";
-            // Hide Next button on incorrect answer
             nextBtn.style.display = 'none';
         }
     });
@@ -101,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             loadQuestion(currentQuestionIndex);
-            // Store the current index in localStorage
             localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
         }
     });
@@ -110,11 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQuestionIndex < questions.length - 1) {
             currentQuestionIndex++;
             loadQuestion(currentQuestionIndex);
-            // Store the current index in localStorage
             localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
         }
     });
 
-    // Show loading animation while fetching questions
+    // Only reset if it's a brand new user session
+    if (sessionStorage.getItem('isNewUser')) {
+        localStorage.removeItem('currentQuestionIndex');
+        localStorage.removeItem('userScore');
+        sessionStorage.removeItem('isNewUser');
+    }
+
+    // Fetch questions and restore the current state
     fetchQuestions();
 });

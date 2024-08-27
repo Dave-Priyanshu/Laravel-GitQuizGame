@@ -15,12 +15,6 @@
             />
             <div class="flex gap-4 mb-4">
                 <button
-                    id="submit-btn"
-                    class="bg-laravel text-white rounded-lg py-2 px-4 hover:bg-red-700 transition duration-300"
-                >
-                    Submit
-                </button>
-                <button
                     id="help-btn"
                     class="bg-gray-500 text-white rounded-lg py-2 px-4 hover:bg-gray-700 transition duration-300"
                 >
@@ -31,6 +25,12 @@
                     class="bg-blue-500 text-white rounded-lg py-2 px-4 hover:bg-blue-700 transition duration-300"
                 >
                     Hint
+                </button>
+                <button
+                    id="submit-btn"
+                    class="bg-laravel text-white rounded-lg py-2 px-4 hover:bg-red-700 transition duration-300"
+                >
+                    Submit
                 </button>
                 <button
                     id="prev-btn"
